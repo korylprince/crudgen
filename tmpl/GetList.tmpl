@@ -1,0 +1,34 @@
+//Get{{.Name}}List returns a list of {{.Name}} from db, ordered by an optional orderBy field
+//If orderBy is an empty string, it will default to "{{SQLNameList .Keys}}"
+func Get{{.Name}}List(db *sql.DB, orderBy string, limit int64) (list []{{.Name}}, err error) {
+    if orderBy == "" {
+        orderBy = "{{SQLNameList .Keys}}"
+    }
+
+    stmt, err := db.Prepare(fmt.Sprintf("SELECT {{SQLNameList .Fields}} FROM {{.SQLName}} ORDER BY %s LIMIT %d;", orderBy, limit))
+    if err != nil {
+        return nil, err
+    }
+
+    rows, err := stmt.Query()
+    if err != nil {
+        return nil, err
+    }
+    defer func() {
+        e := rows.Close()
+        if e != nil && err == nil {
+            err = e
+        }
+    }()
+
+    var objs []{{.Name}}
+    for rows.Next() {
+        var obj {{.Name}}
+        err = rows.Scan({{ScanList "obj" .Fields}})
+        if err != nil {
+            return nil, err
+        }
+        objs = append(objs, obj)
+    }
+    return objs, rows.Err()
+}

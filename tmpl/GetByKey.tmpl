@@ -1,0 +1,11 @@
+//Get{{.Name}}ByKey gets the {{.Name}} from db with the given key{{if gt (len .Keys) 1}}s{{end}}
+func Get{{.Name}}ByKey(db *sql.DB, {{FuncParameterList .Keys}}) (*{{.Name}}, error) {
+    stmt, err := db.Prepare("SELECT {{SQLNameList .Fields}} FROM {{.SQLName}} WHERE {{SQLParameterList .Keys}};")
+    if err != nil {
+        return nil, err
+    }
+    row := stmt.QueryRow(ID)
+    obj := new({{.Name}})
+    err = row.Scan({{ScanList "obj" .Fields}})
+    return obj, err
+}
