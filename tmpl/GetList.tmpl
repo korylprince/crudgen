@@ -1,4 +1,4 @@
-//Get{{.Name}}List returns a list of {{.Name}} from db, ordered by an optional orderBy field
+//Get{{.Name}}List returns a list of {{.Name}} from db, ordered by an optional orderBy field and limited by limit
 //If orderBy is an empty string, it will default to "{{SQLNameList .Keys}}"
 func Get{{.Name}}List(db *sql.DB, orderBy string, limit int64) (list []{{.Name}}, err error) {
     if orderBy == "" {
