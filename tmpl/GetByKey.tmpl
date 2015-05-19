@@ -1,5 +1,5 @@
 //Get{{.Name}}ByKey gets the {{.Name}} from db with the given key{{if gt (len .Keys) 1}}s{{end}}
-func Get{{.Name}}ByKey(db *sql.DB, {{FuncParameterList .Keys}}) (*{{.Name}}, error) {
+func Get{{.Name}}ByKey(db {{.DBInterface}}, {{FuncParameterList .Keys}}) (*{{.Name}}, error) {
     stmt, err := db.Prepare("SELECT {{SQLNameList .Fields}} FROM {{.SQLName}} WHERE {{SQLParameterList .Keys}};")
     if err != nil {
         return nil, err

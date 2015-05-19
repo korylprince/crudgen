@@ -9,10 +9,11 @@ import (
 )
 
 type Config struct {
-	Templates  []string
-	Structs    []string
-	InputPath  string
-	OutputPath string
+	Templates   []string
+	Structs     []string
+	DBInterface string
+	InputPath   string
+	OutputPath  string
 }
 
 var config *Config
@@ -22,6 +23,7 @@ func init() {
 
 	tmpls := flag.String("tmpls", "", "Comma-separated list of templates")
 	structs := flag.String("structs", "", "Comma-separated list of struct names")
+	flag.StringVar(&(config.DBInterface), "interface", "*sql.DB", "Interface or type for 'db' parameter in templates")
 	flag.StringVar(&(config.OutputPath), "o", "crud.go", "Output path")
 	flag.Parse()
 
@@ -46,6 +48,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		s.DBInterface = config.DBInterface
 		structs = append(structs, s)
 	}
 

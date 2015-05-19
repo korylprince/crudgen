@@ -14,12 +14,13 @@ type Field struct {
 	ForeignKey string
 }
 
-//Struct represents a parsed go struct
+//Struct represents a parsed go struct with some metadata
 type Struct struct {
-	Name    string
-	SQLName string
-	Fields  []Field
-	Package string
+	Name        string
+	SQLName     string
+	Fields      []Field
+	Package     string
+	DBInterface string //go type for db parameter
 }
 
 //Keys returns all of the Struct Fields that are keys
